@@ -1,10 +1,14 @@
 {
-  "name": "binary-search-tree",
-  "version": "0.2.6",
-  "author": {
-    "name": "Louis Chatriot",
-    "email": "louis.chatriot@gmail.com"
+  "name": "@justlep/binary-search-tree",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=14.17.6"
   },
+  "author": "Lennart Pegel <github@justlep.net>",
+  "contributors": [
+    "Louis Chatriot <louis.chatriot@gmail.com>"
+  ],
   "description": "Different binary search tree implementations, including a self-balancing one (AVL)",
   "keywords": [
     "AVL tree",
@@ -12,21 +16,21 @@
     "self-balancing",
     "AVL tree"
   ],
-  "homepage": "https://github.com/louischatriot/node-binary-search-tree",
+  "homepage": "https://github.com/justlep/binary-search-tree",
   "repository": {
     "type": "git",
-    "url": "git@github.com:louischatriot/node-binary-search-tree.git"
-  },
-  "dependencies": {
-    "underscore": "~1.4.4"
+    "url": "https://github.com/justlep/binary-search-tree.git"
   },
   "devDependencies": {
-    "chai": "1.0.x",
-    "mocha": "1.4.x"
+    "chai": "^3.2.0",
+    "eslint": "^8.13.0",
+    "eslint-plugin-log-filenames": "^1.0.5",
+    "mocha": "^9.2.2"
   },
   "scripts": {
-    "test": "make test"
+    "test": "mocha --reporter spec --timeout 10000 test/",
+    "lint": "eslint --max-warnings 5 --ext js lib/ index.js"
   },
-  "main": "index",
+  "main": "index.js",
   "licence": "MIT"
 }

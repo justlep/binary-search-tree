@@ -1,10 +1,5 @@
-var should = require('chai').should()
-  , assert = require('chai').assert
-  , BinarySearchTree = require('../index').BinarySearchTree
-  , _ = require('underscore')
-  , customUtils = require('../lib/customUtils')
-  ;
-
+import {assert, expect, getRandomArray} from './testUtils.js';
+import {BinarySearchTree} from '../lib/bst.js';
 
 describe('Binary search tree', function () {
 
@@ -208,7 +203,7 @@ describe('Binary search tree', function () {
 
       bst.checkIsBST();
       bst.key.should.equal(10);
-      _.isEqual(bst.data, ['some data']).should.equal(true);
+      expect(bst.data).to.eql(['some data']);
       assert.isNull(bst.left);
       assert.isNull(bst.right);
     });
@@ -222,7 +217,7 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       assert.isNull(bst.right);
       bst.left.key.should.equal(7);
-      _.isEqual(bst.left.data, ['some other data']).should.equal(true);
+      expect(bst.left.data).to.eql(['some other data']);
       assert.isNull(bst.left.left);
       assert.isNull(bst.left.right);
     });
@@ -236,7 +231,7 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       assert.isNull(bst.left);
       bst.right.key.should.equal(14);
-      _.isEqual(bst.right.data, ['some other data']).should.equal(true);
+      expect(bst.right.data).to.eql(['some other data']);
       assert.isNull(bst.right.left);
       assert.isNull(bst.right.right);
     });
@@ -252,13 +247,13 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       assert.isNull(bst.right);
       bst.left.key.should.equal(7);
-      _.isEqual(bst.left.data, ['some other data']).should.equal(true);
+      expect(bst.left.data).to.eql(['some other data']);
 
       bst.left.left.key.should.equal(1);
-      _.isEqual(bst.left.left.data, ['hello']).should.equal(true);
+      expect(bst.left.left.data).to.eql(['hello']);
 
       bst.left.right.key.should.equal(9);
-      _.isEqual(bst.left.right.data, ['world']).should.equal(true);
+      expect(bst.left.right.data).to.eql(['world']);
     });
 
     it("Recursive insertion on the right works", function () {
@@ -272,13 +267,13 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       assert.isNull(bst.left);
       bst.right.key.should.equal(17);
-      _.isEqual(bst.right.data, ['some other data']).should.equal(true);
+      expect(bst.right.data).to.eql(['some other data']);
 
       bst.right.left.key.should.equal(11);
-      _.isEqual(bst.right.left.data, ['hello']).should.equal(true);
+      expect(bst.right.left.data).to.eql(['hello']);
 
       bst.right.right.key.should.equal(19);
-      _.isEqual(bst.right.right.data, ['world']).should.equal(true);
+      expect(bst.right.right.data).to.eql(['world']);
     });
 
     it('If uniqueness constraint not enforced, we can insert different data for same key', function () {
@@ -290,14 +285,14 @@ describe('Binary search tree', function () {
 
       bst.checkIsBST();
       bst.left.key.should.equal(3);
-      _.isEqual(bst.left.data, ['hello', 'world']).should.equal(true);
+      expect(bst.left.data).to.eql(['hello', 'world']);
 
       bst.insert(12, 'a');
       bst.insert(12, 'b');
 
       bst.checkIsBST();
       bst.right.key.should.equal(12);
-      _.isEqual(bst.right.data, ['a', 'b']).should.equal(true);
+      expect(bst.right.data).to.eql(['a', 'b']);
     });
 
     it('If uniqueness constraint is enforced, we cannot insert different data for same key', function () {
@@ -314,7 +309,7 @@ describe('Binary search tree', function () {
 
       bst.checkIsBST();
       bst.left.key.should.equal(3);
-      _.isEqual(bst.left.data, ['hello']).should.equal(true);
+      expect(bst.left.data).to.eql(['hello']);
 
       bst.insert(12, 'a');
       try {
@@ -326,7 +321,7 @@ describe('Binary search tree', function () {
 
       bst.checkIsBST();
       bst.right.key.should.equal(12);
-      _.isEqual(bst.right.data, ['a']).should.equal(true);
+      expect(bst.right.data).to.eql(['a']);
     });
 
     it('Can insert 0 or the empty string', function () {
@@ -336,7 +331,7 @@ describe('Binary search tree', function () {
 
       bst.checkIsBST();
       bst.key.should.equal(0);
-      _.isEqual(bst.data, ['some data']).should.equal(true);
+      expect(bst.data).to.eql(['some data']);
       assert.isNull(bst.left);
       assert.isNull(bst.right);
 
@@ -346,7 +341,7 @@ describe('Binary search tree', function () {
 
       bst.checkIsBST();
       bst.key.should.equal('');
-      _.isEqual(bst.data, ['some other data']).should.equal(true);
+      expect(bst.data).to.eql(['some other data']);
       assert.isNull(bst.left);
       assert.isNull(bst.right);
     });
@@ -354,7 +349,7 @@ describe('Binary search tree', function () {
     it('Can insert a lot of keys and still get a BST (sanity check)', function () {
       var bst = new BinarySearchTree({ unique: true });
 
-      customUtils.getRandomArray(100).forEach(function (n) {
+      getRandomArray(100).forEach(function (n) {
         bst.insert(n, 'some data');
       });
 
@@ -384,21 +379,21 @@ describe('Binary search tree', function () {
       var bst = new BinarySearchTree()
         , i;
 
-      customUtils.getRandomArray(100).forEach(function (n) {
+      getRandomArray(100).forEach(function (n) {
         bst.insert(n, 'some data for ' + n);
       });
 
       bst.checkIsBST();
 
       for (i = 0; i < 100; i += 1) {
-        _.isEqual(bst.search(i), ['some data for ' + i]).should.equal(true);
+        expect(bst.search(i)).to.eql(['some data for ' + i]);
       }
     });
 
     it('If no data can be found, return an empty array', function () {
       var bst = new BinarySearchTree();
 
-      customUtils.getRandomArray(100).forEach(function (n) {
+      getRandomArray(100).forEach(function (n) {
         if (n !== 63) {
           bst.insert(n, 'some data for ' + n);
         }
@@ -484,7 +479,7 @@ describe('Binary search tree', function () {
 
       function checkBst () {
         [10, 5, 3, 8, 15, 12, 37].forEach(function (k) {
-          _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+          expect(bst.search(k)).to.eql(['some ' + k]);
         });
       }
 
@@ -514,7 +509,7 @@ describe('Binary search tree', function () {
 
       bst.insert(10, 'hello');
       bst.key.should.equal(10);
-      _.isEqual(bst.data, ['hello']).should.equal(true);
+      expect(bst.data).to.eql(['hello']);
       bst.getNumberOfKeys().should.equal(1);
 
       bst.delete(10);
@@ -543,7 +538,7 @@ describe('Binary search tree', function () {
           if (k === theRemoved) {
             bst.search(k).length.should.equal(0);
           } else {
-            _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+            expect(bst.search(k)).to.eql(['some ' + k]);
           }
         });
 
@@ -588,7 +583,7 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       bst.getNumberOfKeys().should.equal(3);
       [5, 3, 6].forEach(function (k) {
-        _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+        expect(bst.search(k)).to.eql(['some ' + k]);
       });
       bst.search(10).length.should.equal(0);
 
@@ -602,7 +597,7 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       bst.getNumberOfKeys().should.equal(3);
       [15, 13, 16].forEach(function (k) {
-        _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+        expect(bst.search(k)).to.eql(['some ' + k]);
       });
       bst.search(10).length.should.equal(0);
     });
@@ -625,7 +620,7 @@ describe('Binary search tree', function () {
           if (k === theRemoved) {
             bst.search(k).length.should.equal(0);
           } else {
-            _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+            expect(bst.search(k)).to.eql(['some ' + k]);
           }
         });
 
@@ -655,7 +650,7 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       bst.getNumberOfKeys().should.equal(6);
       [5, 3, 8, 15, 12, 37].forEach(function (k) {
-        _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+        expect(bst.search(k)).to.eql(['some ' + k]);
       });
       bst.search(10).length.should.equal(0);
     });
@@ -672,7 +667,7 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       bst.getNumberOfKeys().should.equal(14);
       [10, 3, 1, 4, 8, 6, 9, 15, 12, 11, 13, 20, 19, 42].forEach(function (k) {
-        _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+        expect(bst.search(k)).to.eql(['some ' + k]);
       });
       bst.search(5).length.should.equal(0);
 
@@ -685,7 +680,7 @@ describe('Binary search tree', function () {
       bst.checkIsBST();
       bst.getNumberOfKeys().should.equal(14);
       [10, 5, 3, 1, 4, 8, 6, 9, 12, 11, 13, 20, 19, 42].forEach(function (k) {
-        _.isEqual(bst.search(k), ['some ' + k]).should.equal(true);
+        expect(bst.search(k)).to.eql(['some ' + k]);
       });
       bst.search(15).length.should.equal(0);
     });
@@ -980,8 +975,9 @@ describe('Binary search tree', function () {
 
       // Number of key and number of pieces of data match
       bst.getNumberOfKeys().should.equal(Object.keys(data).length);
-      _.reduce(_.map(data, function (d) { return d.length; }), function (memo, n) { return memo + n; }, 0).should.equal(bstDataElems.length);
-
+      
+      expect(Object.values(data).map(d => d.length).reduce((sum, n) => sum + n, 0)).to.equal(bstDataElems.length);
+      
       // Compare data
       Object.keys(data).forEach(function (key) {
         checkDataEquality(bst.search(key), data[key]);

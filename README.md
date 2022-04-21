@@ -1,17 +1,19 @@
 # Binary search trees for Node.js
 
-**Note: this module is not actively maintained bar for bug fixes. Its primary use is within NeDB and I do not plan on adding any new features.**
+This is a cleaned up and modernized fork of [node-binary-search-tree](https://github.com/louischatriot/node-binary-search-tree/), 
+provided as ES module. Written primarily to store indexes for <a href="https://github.com/justlep/nedb" target="_blank">NeDB</a> (a javascript dependency-less database).
 
-Two implementations of binary search tree: <a href="http://en.wikipedia.org/wiki/Binary_search_tree" target="_blank">basic</a> and <a href="http://en.wikipedia.org/wiki/AVL_tree" target="_blank">AVL</a> (a kind of self-balancing binmary search tree). I wrote this module primarily to store indexes for <a href="https://github.com/louischatriot/nedb" target="_blank">NeDB</a> (a javascript dependency-less database).
+
+* Node.js 14.17.6+
+* no dependencies
 
 
-## Installation and tests
-Package name is `binary-search-tree`.
+Two implementations of binary search tree: <a href="http://en.wikipedia.org/wiki/Binary_search_tree" target="_blank">basic</a> and <a href="http://en.wikipedia.org/wiki/AVL_tree" target="_blank">AVL</a> (a kind of self-balancing binary search tree). 
+
+## Installation
 
 ```bash
-npm install binary-search-tree --save
-
-make test
+npm install @justlep/binary-search-tree --save
 ```
 
 ## Usage
@@ -20,11 +22,10 @@ The API mainly provides 3 functions: `insert`, `search` and `delete`. If you do 
 Values inserted can be anything except `undefined`.
 
 ```javascript
-var BinarySearchTree = require('binary-search-tree').BinarySearchTree
-  , AVLTree = require('binary-search-tree').AVLTree   // Same API as BinarySearchTree
+import {BinarySearchTree, AVLTree} from '@justlep/binary-search-tree';
 
 // Creating a binary search tree
-var bst = new BinarySearchTree();
+const bst = new BinarySearchTree();
 
 // Inserting some data
 bst.insert(15, 'some data for key 15');
@@ -55,7 +56,7 @@ There are three optional parameters you can pass the BST constructor, allowing y
 ### Uniqueness
 
 ```javascript
-var bst = new BinarySearchTree({ unique: true });
+const bst = new BinarySearchTree({unique: true});
 bst.insert(10, 'hello');
 bst.insert(10, 'world');   // Will throw an error
 ```
@@ -63,24 +64,23 @@ bst.insert(10, 'world');   // Will throw an error
 ### Custom key comparison
 
 ```javascript
-// Custom key comparison function
-// It needs to return a negative number if a is less than b,
-// a positive number if a is greater than b
-// and 0 if they are equal
-// If none is provided, the default one can compare numbers, dates and strings
-// which are the most common usecases
-function compareKeys (a, b) {
-  if (a.age < b.age) { return -1; }
-  if (a.age > b.age) { return 1; }
-  
-  return 0;
+/**
+ * Custom key comparison function for age keys.
+ * @param {Object} a
+ * @param {Object} b
+ * @return {number} - 0 / 1 / -1
+ */
+function compareKeys(a, b) {
+  return (a.age > b.age) ? 1 : (a.age < b.age) ? -1 : 0;
 }
 
 // Now we can use objects with an 'age' property as keys
-var bst = new BinarySearchTree({ compareKeys: compareKeys });
+const bst = new BinarySearchTree({ compareKeys });
 bst.insert({ age: 23 }, 'Mark');
 bst.insert({ age: 47 }, 'Franck');
 ```
+If no custom key comparison function is provided to the constructor, the default one can compare numbers, dates and strings
+which are the most common usecases
 
 ### Custom value checking
 
@@ -91,7 +91,7 @@ bst.insert({ age: 47 }, 'Franck');
 function checkValueEquality (a, b) {
   return a.length === b.length;
 }
-var bst = new BinarySearchTree({ checkValueEquality: checkValueEquality });
+const bst = new BinarySearchTree({ checkValueEquality });
 bst.insert(10, 'hello');
 bst.insert(10, 'world');
 bst.insert(10, 'howdoyoudo');
@@ -103,25 +103,4 @@ bst.search(10);   // Returns ['howdoyoudo']
 
 ## License 
 
-(The MIT License)
-
-Copyright (c) 2013 Louis Chatriot &lt;louis.chatriot@gmail.com&gt;
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[MIT](./LICENSE)

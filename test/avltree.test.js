@@ -1,9 +1,5 @@
-var should = require('chai').should()
-  , assert = require('chai').assert
-  , AVLTree = require('../index').AVLTree
-  , _ = require('underscore')
-  , customUtils = require('../lib/customUtils')
-  ;
+import {assert, expect, getRandomArray} from './testUtils.js';
+import {_AVLTree, AVLTree} from '../lib/avltree.js';
 
 
 describe('AVL tree', function () {
@@ -11,8 +7,7 @@ describe('AVL tree', function () {
   describe('Sanity checks', function () {
 
     it('Checking that all nodes heights are correct', function () {
-      var _AVLTree = AVLTree._AVLTree
-        , avlt = new _AVLTree({ key: 10 })
+      var avlt = new _AVLTree({ key: 10 })
         , l = new _AVLTree({ key: 5 })
         , r = new _AVLTree({ key: 15 })
         , ll = new _AVLTree({ key: 3 })
@@ -76,8 +71,7 @@ describe('AVL tree', function () {
     });
 
     it('Calculate the balance factor', function () {
-      var _AVLTree = AVLTree._AVLTree
-        , avlt = new _AVLTree({ key: 10 })
+      var avlt = new _AVLTree({ key: 10 })
         , l = new _AVLTree({ key: 5 })
         , r = new _AVLTree({ key: 15 })
         , ll = new _AVLTree({ key: 3 })
@@ -124,8 +118,7 @@ describe('AVL tree', function () {
     });
 
     it('Can check that a tree is balanced', function () {
-      var _AVLTree = AVLTree._AVLTree
-        , avlt = new _AVLTree({ key: 10 })
+      var avlt = new _AVLTree({ key: 10 })
         , l = new _AVLTree({ key: 5 })
         , r = new _AVLTree({ key: 15 })
         , ll = new _AVLTree({ key: 3 })
@@ -191,7 +184,7 @@ describe('AVL tree', function () {
 
       avlt.checkIsAVLT();
       avlt.tree.key.should.equal(10);
-      _.isEqual(avlt.tree.data, ['some data']).should.equal(true);
+      expect(avlt.tree.data).to.eql(['some data']);
       assert.isNull(avlt.tree.left);
       assert.isNull(avlt.tree.right);
     });
@@ -204,13 +197,13 @@ describe('AVL tree', function () {
       avlt.insert(3, 'world');
 
       avlt.checkIsAVLT();
-      _.isEqual(avlt.search(3), ['hello', 'world']).should.equal(true);
+      expect(avlt.search(3)).to.eql(['hello', 'world']);
 
       avlt.insert(12, 'a');
       avlt.insert(12, 'b');
 
       avlt.checkIsAVLT();
-      _.isEqual(avlt.search(12), ['a', 'b']).should.equal(true);
+      expect(avlt.search(12)).to.eql(['a', 'b']);
     });
 
     it('If uniqueness constraint is enforced, we cannot insert different data for same key', function () {
@@ -226,7 +219,7 @@ describe('AVL tree', function () {
       }
 
       avlt.checkIsAVLT();
-      _.isEqual(avlt.search(3), ['hello']).should.equal(true);
+      expect(avlt.search(3)).to.eql(['hello']);
 
       avlt.insert(12, 'a');
       try {
@@ -237,7 +230,7 @@ describe('AVL tree', function () {
       }
 
       avlt.checkIsAVLT();
-      _.isEqual(avlt.search(12), ['a']).should.equal(true);
+      expect(avlt.search(12)).to.eql(['a']);
     });
 
     it('Can insert 0 or the empty string', function () {
@@ -247,7 +240,7 @@ describe('AVL tree', function () {
 
       avlt.checkIsAVLT();
       avlt.tree.key.should.equal(0);
-      _.isEqual(avlt.tree.data, ['some data']).should.equal(true);
+      expect(avlt.tree.data).to.eql(['some data']);
 
       avlt = new AVLTree();
 
@@ -255,7 +248,7 @@ describe('AVL tree', function () {
 
       avlt.checkIsAVLT();
       avlt.tree.key.should.equal('');
-      _.isEqual(avlt.tree.data, ['some other data']).should.equal(true);
+      expect(avlt.tree.data).to.eql(['some other data']);
     });
 
     it('Auto-balancing insertions', function () {
@@ -340,7 +333,7 @@ describe('AVL tree', function () {
     it('Can insert a lot of keys and still get an AVLT (sanity check)', function () {
       var avlt = new AVLTree({ unique: true });
 
-      customUtils.getRandomArray(1000).forEach(function (n) {
+      getRandomArray(1000).forEach(function (n) {
         avlt.insert(n, 'some data');
         avlt.checkIsAVLT();
       });
@@ -356,21 +349,20 @@ describe('AVL tree', function () {
       var avlt = new AVLTree()
         , i;
 
-      customUtils.getRandomArray(100).forEach(function (n) {
+      getRandomArray(100).forEach(function (n) {
         avlt.insert(n, 'some data for ' + n);
       });
 
       avlt.checkIsAVLT();
 
       for (i = 0; i < 100; i += 1) {
-        _.isEqual(avlt.search(i), ['some data for ' + i]).should.equal(true);
+        expect(avlt.search(i)).to.eql(['some data for ' + i]);
       }
     });
 
     it('If no data can be found, return an empty array', function () {
       var avlt = new AVLTree();
-
-      customUtils.getRandomArray(100).forEach(function (n) {
+      getRandomArray(100).forEach(function (n) {
         if (n !== 63) {
           avlt.insert(n, 'some data for ' + n);
         }
@@ -456,7 +448,7 @@ describe('AVL tree', function () {
 
       function checkavlt () {
         [10, 5, 3, 8, 15, 12, 37].forEach(function (k) {
-          _.isEqual(avlt.search(k), ['some ' + k]).should.equal(true);
+          expect(avlt.search(k)).to.eql(['some ' + k]);
         });
       }
 
@@ -486,7 +478,7 @@ describe('AVL tree', function () {
 
       avlt.insert(10, 'hello');
       avlt.tree.key.should.equal(10);
-      _.isEqual(avlt.tree.data, ['hello']).should.equal(true);
+      expect(avlt.tree.data).to.eql(['hello']);
       avlt.getNumberOfKeys().should.equal(1);
 
       avlt.delete(10);
@@ -516,7 +508,7 @@ describe('AVL tree', function () {
           if (theRemoved.indexOf(k) !== -1) {
             avlt.search(k).length.should.equal(0);
           } else {
-            _.isEqual(avlt.search(k), ['some ' + k]).should.equal(true);
+            expect(avlt.search(k)).to.eql(['some ' + k]);
           }
         });
 
@@ -581,7 +573,7 @@ describe('AVL tree', function () {
       avlt.delete(10);
       avlt.checkIsAVLT();
       avlt.getNumberOfKeys().should.equal(1);
-      _.isEqual(avlt.search(5), ['some 5']).should.equal(true);
+      expect(avlt.search(5)).to.eql(['some 5']);
       avlt.search(10).length.should.equal(0);
 
       // Root has only one child, on the right
@@ -593,7 +585,7 @@ describe('AVL tree', function () {
       avlt.delete(10);
       avlt.checkIsAVLT();
       avlt.getNumberOfKeys().should.equal(1);
-      _.isEqual(avlt.search(15), ['some 15']).should.equal(true);
+      expect(avlt.search(15)).to.eql(['some 15']);
       avlt.search(10).length.should.equal(0);
     });
 
@@ -609,7 +601,7 @@ describe('AVL tree', function () {
           if (theRemoved.indexOf(k) !== -1) {
             avlt.search(k).length.should.equal(0);
           } else {
-            _.isEqual(avlt.search(k), ['some ' + k]).should.equal(true);
+            expect(avlt.search(k)).to.eql(['some ' + k]);
           }
         });
 
@@ -667,7 +659,7 @@ describe('AVL tree', function () {
       avlt.checkIsAVLT();
       avlt.getNumberOfKeys().should.equal(6);
       [5, 3, 8, 15, 12, 37].forEach(function (k) {
-        _.isEqual(avlt.search(k), ['some ' + k]).should.equal(true);
+        expect(avlt.search(k)).to.eql(['some ' + k]);
       });
       avlt.search(10).length.should.equal(0);
 
@@ -681,7 +673,7 @@ describe('AVL tree', function () {
       avlt.checkIsAVLT();
       avlt.getNumberOfKeys().should.equal(6);
       [5, 8, 15, 12, 37, 42].forEach(function (k) {
-        _.isEqual(avlt.search(k), ['some ' + k]).should.equal(true);
+        expect(avlt.search(k)).to.eql(['some ' + k]);
       });
       avlt.search(10).length.should.equal(0);
     });
@@ -699,7 +691,7 @@ describe('AVL tree', function () {
       avlt.checkIsAVLT();
       avlt.getNumberOfKeys().should.equal(15);
       [10, 3, 1, 4, 8, 6, 9, 15, 12, 11, 13, 20, 19, 42, 3.5].forEach(function (k) {
-        _.isEqual(avlt.search(k), ['some ' + k]).should.equal(true);
+        expect(avlt.search(k)).to.eql(['some ' + k]);
       });
       avlt.search(5).length.should.equal(0);
 
@@ -713,7 +705,7 @@ describe('AVL tree', function () {
       avlt.checkIsAVLT();
       avlt.getNumberOfKeys().should.equal(15);
       [10, 3, 1, 4, 8, 6, 9, 5, 12, 11, 13, 20, 19, 42, 12.5].forEach(function (k) {
-        _.isEqual(avlt.search(k), ['some ' + k]).should.equal(true);
+        expect(avlt.search(k)).to.eql(['some ' + k]);
       });
       avlt.search(15).length.should.equal(0);
     });
@@ -853,7 +845,7 @@ describe('AVL tree', function () {
       if (a === b) { return 0; }
     }
 
-    var avlt = new AVLTree({ compareKeys: compareKeys });
+    var avlt = new AVLTree({ compareKeys });
 
     avlt.insert(2, undefined);
     avlt.checkIsAVLT();
@@ -1029,8 +1021,9 @@ describe('AVL tree', function () {
 
       // Number of key and number of pieces of data match
       avlt.getNumberOfKeys().should.equal(Object.keys(data).length);
-      _.reduce(_.map(data, function (d) { return d.length; }), function (memo, n) { return memo + n; }, 0).should.equal(avltDataElems.length);
-
+      
+      expect(Object.values(data).map(d => d.length).reduce((sum, n) => sum + n, 0)).to.equal(avltDataElems.length);
+      
       // Compare data
       Object.keys(data).forEach(function (key) {
         checkDataEquality(avlt.search(key), data[key]);
