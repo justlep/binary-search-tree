@@ -2,4 +2,5 @@ test/
 .idea
 .editorconfig
 .eslintrc
+.travis.yml
 package-lock.json
