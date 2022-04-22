@@ -1,5 +1,7 @@
 # Binary search trees for Node.js 
 [![Build Status](https://api.travis-ci.com/justlep/binary-search-tree.svg?branch=master)](https://app.travis-ci.com/github/justlep/binary-search-tree)
+[![NPM Version](https://img.shields.io/npm/v/@justlep/binary-search-tree.svg)](https://www.npmjs.com/package/@justlep/binary-search-tree)
+[![Node.js Version](https://img.shields.io/node/v/@justlep/binary-search-tree.svg)]()
 
 This is a cleaned up and modernized fork of [node-binary-search-tree](https://github.com/louischatriot/node-binary-search-tree/), 
 provided as ES module. Written primarily to store indexes for <a href="https://github.com/justlep/nedb" target="_blank">NeDB</a> (a javascript dependency-less database).
